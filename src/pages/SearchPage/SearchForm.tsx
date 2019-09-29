@@ -11,9 +11,10 @@ export const SearchForm: React.FC<Props> = ({ searchItems = searchItemsImpl }) =
 
     const search = useCallback(() => {
         ctx.setSearchWord(searchWord)
+        ctx.setCurrentPage(0)
         searchItems({
             name: searchWord,
-            page: ctx.currentPage,
+            page: 0,
         },
             ctx.setItemLoading,
             ctx.setItemsResponse
