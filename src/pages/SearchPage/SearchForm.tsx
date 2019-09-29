@@ -1,22 +1,24 @@
 import React, { useCallback, useContext, useState } from "react";
-import { SearchItemPageContext, SearchItemPageProps, SearchItemPage } from "./Page";
+import { SearchItemPageContext, SearchItemPageProps } from "./Page";
 import { searchItemsImpl } from "../../reqs/searchItems";
 
 type Props = Pick<SearchItemPageProps, "searchItems">
 
 export const SearchForm: React.FC<Props> = ({ searchItems = searchItemsImpl }) => {
-    const [searchWord, setSearchWord] = useState<string>("")
-
     const ctx = useContext(SearchItemPageContext)
 
+    const [searchWord, setSearchWord] = useState<string>(ctx.searchWord)
+
     const search = useCallback(() => {
+        ctx.setSearchWord(searchWord)
         searchItems({
             name: searchWord,
+            page: ctx.currentPage,
         },
             ctx.setItemLoading,
-            ctx.setItems
+            ctx.setItemsResponse
         )
-    }, [searchWord, searchItems, ctx.setItemLoading, ctx.setItems])
+    }, [searchWord, searchItems, ctx.setItemLoading, ctx.setItemsResponse, ctx.currentPage, ctx.setSearchWord])
 
     const setSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchWord(e.target.value)
@@ -24,8 +26,8 @@ export const SearchForm: React.FC<Props> = ({ searchItems = searchItemsImpl }) =
 
     return <>
         <input value={searchWord} onChange={setSearch} />
-        <div onClick={search}>
+        <button onClick={search} disabled={ctx.isItemLoading}>
             search
-        </div>
+        </button>
     </>
 }
