@@ -48,14 +48,9 @@ export const Items: React.FC<Props> = ({ searchItems = searchItemsImpl }) => {
         search(prevPage)
     }, [ctx.setCurrentPage, ctx.currentPage])
 
-    const isNextDisabled = useMemo(() => {
-        return ctx.currentPage === ctx.itemsResponse.total || ctx.isItemLoading
-    }, [ctx.currentPage, ctx.itemsResponse.total, ctx.isItemLoading])
+    const isNextDisabled = ctx.currentPage === ctx.itemsResponse.total || ctx.isItemLoading
 
-    const isPrepDisabled = useMemo(() => {
-        return ctx.currentPage === 0 || ctx.isItemLoading
-    }, [ctx.currentPage, ctx.isItemLoading])
-
+    const isPrepDisabled = ctx.currentPage === 0 || ctx.isItemLoading
 
     return <>
         {itemsRenderer()}
