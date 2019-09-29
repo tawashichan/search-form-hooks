@@ -1,17 +1,26 @@
 import { StateSetter } from "./setter";
 import { LoadingSetter } from "./loader";
 
-export interface Item { 
+export interface Item {
     name: string
 }
 
-export interface SearchItemsQuery { 
-    name: string 
+export interface SearchItemsQuery {
+    name: string
+    page: number
 }
 
 export type ItemSetter = StateSetter<Item>
 export type ItemsSetter = StateSetter<Item[]>
+export type ItemsResponseSetter = StateSetter<ItemsResponse>
 
-export type UseGetItems = (setLoading: LoadingSetter,setItems: ItemsSetter) => void
+export interface ItemsResponse {
+    items: Item[],
+    total: number
+}
 
-export type SearchItems = (query: SearchItemsQuery,setLoading: LoadingSetter,setItems: ItemsSetter) => void
+export type SearchItemWordSetter = StateSetter<string>
+
+export type UseGetItems = (query: SearchItemsQuery, setLoading: LoadingSetter, setItemsResponse: ItemsResponseSetter) => void
+
+export type SearchItems = (query: SearchItemsQuery, setLoading: LoadingSetter, setItemsResponse: ItemsResponseSetter) => void    
